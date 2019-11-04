@@ -1,0 +1,13 @@
+notepad .\procesos.txt --> Nombre del archivo txt (se introduce el codigo que se quiere ejecutar)
+
+Get-Content .\procesos.java --> Ver el contenido del archivo.java
+
+cd 'C:\Program Files\Java\jdk-11.0.4\bin' --> Ir a la ruta para encontrar el javac.exe
+
+.\javac.exe 'C:\Users\Usuario DAM 2\Desktop\PSP\Repaso\procesos.java' --> Compilar archivo.java
+
+cd 'C:\Users\Usuario DAM 2\Desktop\PSP\Repaso' --> Te diriges a la ruta donde esta el archivo para compilar
+
+java procesos --> Ejecucion del programa
+
+notepad salida--> Abre bloc de notas para ver el contenido del archivo
