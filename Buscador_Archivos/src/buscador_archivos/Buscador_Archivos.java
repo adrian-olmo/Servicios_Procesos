@@ -6,6 +6,7 @@
 package buscador_archivos;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 /**
@@ -18,29 +19,31 @@ public class Buscador_Archivos {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("¿En qué ruta quieres buscar los archivos");
-        String path = sc.nextLine();
+        System.out.println("Que carpeta quieres listar: ");
+        String ruta = sc.nextLine();
 
-        System.out.println("Que tipo de archivos quiers buscar");
-        String extension = sc.nextLine();
+        File carpeta = new File(ruta);
+        System.out.println("//// LISTADO COMPLETO");
 
-        String files;
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
-
-        System.out.println("Resultados de la busqueda: ");
-
-        for (int i = 0; i < listOfFiles.length; i++) {
-
-            if (listOfFiles[i].isFile()) {
-                files = listOfFiles[i].getName();
-                if (files.endsWith(extension) || files.endsWith(extension)) {
-                    System.out.println(files);
-                }
+        File[] archivos = carpeta.listFiles();
+        if (archivos == null || archivos.length == 0) {
+            System.out.println("No hay elementos dentro de la carpeta actual");
+            return;
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            for (int i = 0; i < archivos.length; i++) {
+                File archivo = archivos[i];
+                System.out.println(String.format("%s // (%s) // %s - %s",
+                        archivo.getName(),
+                        archivo.isDirectory() ? "Carpeta" : "Archivo",
+                        archivo.isHidden() ? "Oculto": "Visible",//dice si el archivo o directorio está oculto
+                        sdf.format(archivo.lastModified())
+                ));
             }
         }
-        System.out.println("Fin");
+
     }
 }
