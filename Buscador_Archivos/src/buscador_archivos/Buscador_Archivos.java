@@ -36,13 +36,6 @@ public class Buscador_Archivos {
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             for (int i = 0; i < archivos.length; i++) {
-                
-                Thread hilolectura = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        
-                     }
-                });
                 File archivo = archivos[i];
                 System.out.println(String.format("%s // (%s) // %s - %s",
                         archivo.getName(),
