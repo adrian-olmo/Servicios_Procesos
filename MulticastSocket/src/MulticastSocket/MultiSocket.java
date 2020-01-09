@@ -1,4 +1,4 @@
-package chuletas_clienteservidor;
+package MulticastSocket;
 
 
 import java.net.*;
