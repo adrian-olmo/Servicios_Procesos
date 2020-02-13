@@ -15,6 +15,7 @@ public class Servidor {
     public static void main(String args[]) {
         ServerSocket servidor;
         Socket socket;
+        //Cliente cliente = null;
         try {
             servidor = new ServerSocket(5005);
             System.out.println("Iniciando Conexion...");
@@ -46,5 +47,7 @@ public class Servidor {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+
     }
 }
