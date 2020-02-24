@@ -2,68 +2,52 @@ package servidor;
 
 import clases.LoginSQL;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Servidor { //SOCKET SEGURO SERVIDOR
     //PUERTO = 5555
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         LoginSQL loginSQL = new LoginSQL();
-        System.out.println(loginSQL.SHA512("admin","negroo")); //CAMBIAR SEMILLA o PASSWORD*/
+        System.out.println(loginSQL.SHA512("admin", "negroo")); //CAMBIAR SEMILLA o PASSWORD*/
 
 
-    /*
-        ServerSocket s; //Socket servidor
-        Socket sc; //Socket cliente
+        int puerto = 5555;
 
-        PrintStream p; //Canal de escritura
-        BufferedReader b; //Canal de Lectura
+        System.setProperty("javax.net.ssl.keyStore", "src/AlmacenSrv");
+        System.setProperty("javax.net.ssl.keyStorePassword", "1234567");
 
-        String mensaje;
+        SSLServerSocketFactory sfact = (SSLServerSocketFactory) SSLServerSocketFactory
+                .getDefault();
+        SSLServerSocket servidorSSL = (SSLServerSocket) sfact.createServerSocket(puerto);
+        SSLSocket clienteConectado = null;
+        DataInputStream flujoEntrada = null;//FLUJO DE ENTRADA DE CLIENTE
+        DataOutputStream flujoSalida = null;//FLUJO DE SALIDA AL CLIENTE
 
-        System.out.println("arranco el servidor");
+        for (int i = 1; i < 5; i++) {
+            System.out.println("Esperando al cliente " + i);
+            clienteConectado = (SSLSocket) servidorSSL.accept();
+            flujoEntrada = new DataInputStream(clienteConectado.getInputStream());
 
-        try {
-            //Creo el socket server
-            s = new ServerSocket(9999);
+            // EL CLIENTE ME ENVIA UN MENSAJE
+            System.out.println("Recibiendo del CLIENTE: " + i + " \n\t"
+                    + flujoEntrada.readUTF());
 
-            //Invoco el metodo accept del socket servidor, me devuelve una referencia al socket cliente
-            sc = s.accept();
+            flujoSalida = new DataOutputStream(clienteConectado.getOutputStream());
 
-            //Obtengo una referencia a los canales de escritura y lectura del socket cliente
-            b = new BufferedReader(new InputStreamReader(sc.getInputStream()));
-            p = new PrintStream(sc.getOutputStream());
+            // ENVIO UN SALUDO AL CLIENTE
+            flujoSalida.writeUTF("Saludos al cliente del servidor");
+        }
+        // CERRAR STREAMS Y SOCKETS
+        flujoEntrada.close();
+        flujoSalida.close();
+        clienteConectado.close();
+        servidorSSL.close();
 
-            while (true) {
-                //Leo lo que escribio el socket cliente en el canal de lectura
-                mensaje = b.readLine();
-                System.out.println(mensaje);
-
-                //Escribo en canal de escritura el mismo mensaje recibido
-                p.println(mensaje);
-
-
-                if (mensaje.equals("by")) {
-                    break;
-                }
-                if(mensaje.equals("descargar")){
-                    for (int i = 0; i < 10; i++) {
-                        p.println(i);
-                    }
-                    p.println("fin");
-                }
-            }
-            b.close();
-
-            sc.close();
-            s.close();
-        } catch (IOException e) {
-            System.out.println("No puedo crear el socket");
-        }*/
     }
 }
