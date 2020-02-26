@@ -15,7 +15,7 @@ public class Servidor { //SOCKET SEGURO SERVIDOR
 
         int puerto = 5555;
 
-       System.setProperty("javax.net.ssl.keyStore", "src/AlmacenSrv");
+        System.setProperty("javax.net.ssl.keyStore", "src/AlmacenSrv");
         System.setProperty("javax.net.ssl.keyStorePassword", "1234567");
 
         SSLServerSocketFactory sfact = (SSLServerSocketFactory) SSLServerSocketFactory
